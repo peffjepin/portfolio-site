@@ -1,9 +1,9 @@
 import argparse
 import getpass
 
-import app
-import config
-import repo
+from . import app
+from . import config
+from . import repo
 
 USER_PROMPT = "Database Credentials -- User: "
 PASSWD_PROMPT = "Database Credentials -- Password: "
@@ -13,6 +13,12 @@ ADDRESS_PROMPT = "Database Address: "
 parser = argparse.ArgumentParser()
 parser.add_argument(
     "-d", "--debug", action="store_true", help="launch in debug mode"
+)
+parser.add_argument(
+    "-r",
+    "--run",
+    action="store_true",
+    help="run the app using flasks development server.",
 )
 parser.add_argument(
     "-c",
@@ -34,52 +40,48 @@ parser.add_argument(
 )
 
 
-def handle_cli(args):
-    exitcode = None
-    should_init_repo = args.contact
+def main():
+    args = parser.parse_args()
 
-    if should_init_repo:
+    if _should_init_repo(args):
         if args.debug:
             repo.init_debug()
         else:
-            login_to_db(args)
+            _login_to_database(args)
 
     if args.contact:
-        exitcode = exitcode or handle_print_contacts()
+        _handle_print_messages()
 
-    if exitcode is not None:
-        exit(exitcode)
+    if args.run:
+        app.create().run()
 
 
-def handle_print_contacts():
+def _should_init_repo(args):
+    return args.contact or args.run
+
+
+def _handle_print_messages():
     ids = repo.print_contact_messages()
     if ids:
         delete = input("Delete these messages (y/n)? ")
         if delete.lower() == "y":
             repo.delete_contact_messages_by_id(ids)
-    return 0
 
 
-def login_to_db(args):
-    addr = args.db_addr or input(ADDRESS_PROMPT)
-    user = args.db_user or input(USER_PROMPT)
-    passwd = args.db_pass or getpass.getpass(PASSWD_PROMPT)
-    cfg = config.MySQL(
-        user=user, passwd=passwd, addr=addr, db="portfolio"
-    )
+def _login_to_database(args=None):
+    if args is not None:
+        addr = args.db_addr or input(ADDRESS_PROMPT)
+        user = args.db_user or input(USER_PROMPT)
+        passwd = args.db_pass or getpass.getpass(PASSWD_PROMPT)
+    else:
+        addr = input(ADDRESS_PROMPT)
+        user = input(USER_PROMPT)
+        passwd = getpass.getpass(PASSWD_PROMPT)
+
+    cfg = config.MySQL(user=user, passwd=passwd, addr=addr, db="portfolio")
 
     try:
         repo.init(cfg)
     except repo.InvalidCredentials:
         print("Invalid credentials, aborting...")
         exit(1)
-
-
-if __name__ == "__main__":
-    args = parser.parse_args()
-    handle_cli(args)
-
-    if not repo.is_initialized():
-        login_to_db(args)
-    app = app.create(__name__)
-    app.run()

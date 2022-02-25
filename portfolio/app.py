@@ -1,18 +1,22 @@
 import secrets
 
 import flask
-import repo
+
+from . import repo
 
 
-def create(name, config=None):
-    app = flask.Flask(name)
+_APP_NAME = "portfolio"
+
+
+def create(config=None):
+    app = flask.Flask(_APP_NAME)
     app.secret_key = secrets.token_urlsafe(16)
 
     if not repo.is_initialized():
         if config is None:
             raise RuntimeError(
-                "repo has not been manually initialized, so a DBConfig is "
-                "required to initialize the repo module."
+                "repo has not been manually initialized, so a SQLAlchemyConfig"
+                " is required to initialize the repo module."
             )
         repo.init(config)
 

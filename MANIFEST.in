@@ -1,0 +1,2 @@
+recursive-include portfolio/templates *
+recursive-include portfolio/static *
