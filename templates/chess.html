@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Chess -- Jeffrey Pepin{% endblock %}
+{% block content %}
+<section>
+  <div class="header-row">
+    <h1>Gamelib-chess</h1>
+    <a href="https://github.com/PeffJepin/gamelib-chess" target="_blank" title="Source code hosted on github.">
+      <img class="gh-logo" src="{{ url_for('static', filename='images/github-logo.png') }}">
+    </a>
+  </div>
+  <img class="block-image" src="{{ url_for('static', filename='images/app-screenshot.png') }}">
+</section>
+<section>
+  <h2>What is it?</h2>
+  <p>This is an application I wrote as a simple, playable demo for gamelib. It is a chess desktop application which allows you to pick a side and play against the computer.</p>
+</section>
+<section>
+  <h2>How does it work?</h2>
+  <h3>Rendering</h3>
+  <p>All rendering is done with OpenGL. The related code is mostly located within the <a href="https://github.com/peffjepin/gamelib-chess/blob/master/scenes.py", target="_blank">scenes.py</a> file.</p>
+  <p>The board is just a squashed cube. It is 9x9 world units, allowing for the small visual edge to the board. This creates a convenient coordinate system for the board squares. If we consider the c2 square for instance, it works out that the Transform position for a piece on this square would have <em>x=3</em> for <em>c</em> and <em>y=2</em> for <em>2</em>.</p>
+  <p>The pieces are 3d models loaded from .obj files. Gamelib handles locating and loading these resources and others such as the textures automatically.</p>
+</section>
+<section>
+  <h3>Game Logic</h3>
+  <p>The chess logic can be found in <a href="https://github.com/peffjepin/gamelib-chess/blob/master/model.py" target="_blank">model.py</a>, while a lot of user input related logic is found in <a href="https://github.com/peffjepin/gamelib-chess/blob/master/scenes.py" target="_blank">scenes.py.</a></p>
+  <p>The main logic we are concerned with is determining if a move is legal or not. At first it seems that there would be many different edge cases to check for involving chess tactics. But really if we assume that all prior moves leading up to a position have been legal, then we only really care about one thing: Is our king in check after we've finished our turn?</p>
+  <p>Using this logic we can easily determine if a move is legal. We make the move, then we determine if we are in check. If we are, then the move is not legal, if we aren't then the move is legal.</p>
+  <p>The primary end condition, checkmate, is easy to check for with this implementation as well. If a move puts an opponent in check, we simply need to determine if that player has any legal moves.</p>
+  <p>I won't go into edge cases, but the application handles castling, en-passent, stalemate, drawn-by-repetition, and insufficient-material. See the source code if you're interested in those cases.</p>
+</section>
+<section>
+  <h3>The Opponent</h3>
+  <p>The game uses <a href="https://github.com/official-stockfish/Stockfish" target="_blank">stockfish</a> to compute moves for the opponent to play. To accomplish this, I wrote a <a href="https://github.com/peffjepin/gamelib-chess/blob/master/stockfish.py" target="_blank">barebones stockfish binding.</a> Stockfish binaries for Windows and Linux are both included in the repo.</p>
+  <p>Since my stockfish binding is only programmed to select the best move, raise the depth/elo variables at your own risk.</p>
+  <p>There is also a debug opponent which lets the user play both sides. Launch the program with the <em>'-d'</em> command line flag for this opponent.</p>
+</section>
+{% endblock %}

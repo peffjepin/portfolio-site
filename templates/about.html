@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}About -- Jeffrey Pepin{% endblock %}
+{% block content %}
+<section>
+<h1>About</h1>
+  <p>The following skills I have also listed on the landing page to this site, are those which I have the most experience in. I am comfortable with these skills even with minimal documentation available.</p>
+  {% include 'top-skills.html' %}
+</section>
+<section>
+  <p>I am familiar with the following technologies, though only having written small personal projects with them, I certainly require some documentation to get up to speed.</p>
+  {% include 'lesser-skills.html' %}
+</section>
+<section>
+  <p>Python is my go-to language. When I got more serious about programming I decided to focus primarily on one language so I could focus more on learning fundumental programming techniques and patterns rather than spend time focusing on syntax.</p>
+  <p>I am very comfortable picking up new languages and technologies, regardless of whether or not I have listed them above, and can do so with little or no guidance. I am very self motivated when it comes to learning and don't shy away from challenging domains.</p>
+  <p>I am very comfortable on both Windows and Linux operating systems. As far as development tools go, I am comfortable either using modern IDEs or using more minimal environments with a text editor and CLI tools.</p>
+  <p>When I began learning I would use whichever IDE was recommended for the particular language in question. As I started getting more serious, I realized I was quite uncomfortable using the command line. To remedy this I decided to switch to Linux and force myself to learn it.</p>
+  <p>Since then I've come to prefer Linux environments. I like to use text editors for writing code, where vim has become my go-to tool. I still like to keep an IDE installed though, primarily for their context-aware refactoring capabilities.</p>
+</section>
+{% endblock %}
