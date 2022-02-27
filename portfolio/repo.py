@@ -48,6 +48,7 @@ def init_debug():
         connect_args={"check_same_thread": False},
         poolclass=sql.pool.StaticPool,
     )
+    meta.create_all(engine)
 
 
 def _check_init():

@@ -1,5 +1,3 @@
-import secrets
-
 import flask
 
 from . import repo
@@ -10,7 +8,6 @@ _APP_NAME = "portfolio"
 
 def create(config=None):
     app = flask.Flask(_APP_NAME)
-    app.secret_key = secrets.token_urlsafe(16)
 
     if not repo.is_initialized():
         if config is None:
