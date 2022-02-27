@@ -155,7 +155,7 @@ input[type=submit] {
     }
 }
 
-.flashed {
+.contact-confirmation-message {
     text-align: center;
     color: var(--accent-1);
 }

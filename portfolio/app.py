@@ -19,28 +19,42 @@ def create(config=None):
 
     @app.route("/")
     def index():
-        return flask.render_template("index.html")
+        params = _get_common_params()
+        return flask.render_template("index.html", **params)
 
     @app.route("/gamelib")
     def gamelib():
-        return flask.render_template("gamelib.html")
+        params = _get_common_params()
+        return flask.render_template("gamelib.html", **params)
 
     @app.route("/chess")
     def chess():
-        return flask.render_template("chess.html")
+        params = _get_common_params()
+        return flask.render_template("chess.html", **params)
 
     @app.route("/about")
     def about():
-        return flask.render_template("about.html")
+        params = _get_common_params()
+        return flask.render_template("about.html", **params)
 
     @app.route("/handle_contact", methods=["POST"])
     def handle_contact():
-        flask.flash("Thanks for the message!")
         repo.insert_contact_message(
             name=flask.request.form["id"],
             email=flask.request.form["contact"],
             msg=flask.request.form["message"],
         )
+        flask.session["message"] = "Thanks for the message!"
         return flask.redirect(flask.request.referrer)
 
     return app
+
+
+def _get_common_params():
+    params = {}
+    try:
+        params["message"] = flask.session["message"]
+        flask.session["message"] = ""
+    except KeyError:
+        pass
+    return params

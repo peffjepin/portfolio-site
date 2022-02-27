@@ -18,9 +18,9 @@
 
     <main>
       <div class="content">
-      {% for message in get_flashed_messages() %}
-      <p class="flashed">{{ message }}</p>
-      {% endfor %}
+      {% if message %}
+      <p class="contact-confirmation-message">{{ message }}</p>
+      {% endif %}
         {% block content %}{% endblock %}
       </div>
     </main>
