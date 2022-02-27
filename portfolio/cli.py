@@ -140,6 +140,9 @@ def _setup_for_production():
     for p in _LOG_PATHS:
         if p.exists():
             os.unlink(p)
+        if not p.parent.exists():
+            p.parent.mkdir(parents=True)
+            os.system(f"chmod a+rwx {p.parent}")
         p.touch()
         os.system(f"chmod a+rw {p}")
 
