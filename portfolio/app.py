@@ -19,23 +19,19 @@ def create(config=None):
 
     @app.route("/")
     def index():
-        params = _get_common_params()
-        return flask.render_template("index.html", **params)
+        return flask.render_template("index.html")
 
     @app.route("/gamelib")
     def gamelib():
-        params = _get_common_params()
-        return flask.render_template("gamelib.html", **params)
+        return flask.render_template("gamelib.html")
 
     @app.route("/chess")
     def chess():
-        params = _get_common_params()
-        return flask.render_template("chess.html", **params)
+        return flask.render_template("chess.html")
 
     @app.route("/about")
     def about():
-        params = _get_common_params()
-        return flask.render_template("about.html", **params)
+        return flask.render_template("about.html")
 
     @app.route("/handle_contact", methods=["POST"])
     def handle_contact():
@@ -44,17 +40,6 @@ def create(config=None):
             email=flask.request.form["contact"],
             msg=flask.request.form["message"],
         )
-        flask.session["message"] = "Thanks for the message!"
         return flask.redirect(flask.request.referrer)
 
     return app
-
-
-def _get_common_params():
-    params = {}
-    try:
-        params["message"] = flask.session["message"]
-        flask.session["message"] = ""
-    except KeyError:
-        pass
-    return params
