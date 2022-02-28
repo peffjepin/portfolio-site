@@ -16,7 +16,7 @@ intend on using this project as a model for a flask-app.
 
 Once you install this package into a virtual environment you will have the `sitectl` cli available.
 
-The wsgi.py file has a docstring explaining how to quickly deploy a production app with the cli.
+The `wsgi.py` file has a docstring explaining how to quickly deploy a production app with the cli.
 
 ```sh
 # deploy the app in development mode
