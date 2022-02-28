@@ -28,7 +28,11 @@ kill = sub_parsers.add_parser(
 )
 setup = sub_parsers.add_parser(
     "setup",
-    help="system setup (priveleges required), only needs to be called once, and should be called from the project root directory.",
+    help="system setup (probably needs root), only needs to be called once, and should be called from the project root directory.",
+)
+update = sub_parsers.add_parser(
+    "update",
+    help="update the app package to the latest version from github. (probably needs root)",
 )
 logs = sub_parsers.add_parser("logs", help="peek into the server log files")
 
@@ -109,11 +113,14 @@ def main():
     elif args.command == "logs":
         _show_logs()
 
+    elif args.command == "update":
+        _update_latest()
+
 
 def create_production():
-    app_script = pathlib.Path.cwd() / "wsgi.py"
+    wsgi = _get_production_wsgi_script()
     out = dict()
-    with open(app_script, "r") as f:
+    with open(wsgi, "r") as f:
         exec(f.read(), {}, out)
     application = out["application"]
     if application.secret_key is None:
@@ -132,9 +139,7 @@ def _deploy_development():
 
 
 def _setup_for_production():
-    if not os.geteuid() == 0:
-        print("setup requires root permissions")
-        exit(1)
+    _ensure_root()
 
     # setup log files and permissions
     for p in _LOG_PATHS:
@@ -206,3 +211,27 @@ def _login_to_database():
     except repo.InvalidCredentials:
         print("Invalid credentials, aborting...")
         exit(1)
+
+
+def _update_latest():
+    _ensure_root()
+    wsgi = _get_production_wsgi_script()
+
+    # save whatever the user has setup for production
+    # so that we can restore it after pulling the repo
+    os.system(f"mv {wsgi} .{wsgi}")
+    os.system("git pull")
+    os.system("python3 setup.py install")
+    os.system(f"mv .{wsgi} {wsgi}")
+
+
+def _ensure_root():
+    if not os.geteuid() == 0:
+        print("root permissions required")
+        exit(1)
+
+
+def _get_production_wsgi_script():
+    wsgi = pathlib.Path.cwd() / "wsgi.py"
+    assert wsgi.exists(), f"wsgi.py not found: {wsgi}"
+    return wsgi
