@@ -216,13 +216,14 @@ def _login_to_database():
 def _update_latest():
     _ensure_root()
     wsgi = _get_production_wsgi_script()
+    wsgi_tmp = wsgi.parent / f".{wsgi.name}"
 
     # save whatever the user has setup for production
     # so that we can restore it after pulling the repo
-    os.system(f"mv {wsgi} .{wsgi}")
+    os.system(f"mv {wsgi} {wsgi_tmp}")
     os.system("git pull")
     os.system("python3 setup.py install")
-    os.system(f"mv .{wsgi} {wsgi}")
+    os.system(f"mv {wsgi_tmp} {wsgi}")
 
 
 def _ensure_root():
