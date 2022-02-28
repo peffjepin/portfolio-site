@@ -49,4 +49,9 @@ sitectl -A mysite.com query
 
 # the development deployment uses an in memory sqlite backend, though it could be told to use MySQL
 sitectl -A mysql.address -U mysql.user deploy -d
+
+# update a production app to the latest version in the git repo
+sitectl kill
+sudo sitectl update
+sitectl deploy -p
 ```
