@@ -2,8 +2,7 @@
     --light: #fcfafa;
     --dark: #2a2e45;
     --mid: #3c787e;
-    --accent-1: #aa4465;
-    --accent-2: #fff689;
+    --accent: #aa4465;
 }
 
 body {
@@ -13,30 +12,40 @@ body {
 
 p, li, label{
     font-family: Arial, sans-serif;
-    font-size: 18px;
+    font-size: 20px;
     color: var(--dark);
 }
 
+p {
+    margin-bottom: 2em;
+}
+
+li {
+    margin-bottom: 1em;
+}
+
 a {
-    color: var(--accent-1);
+    color: var(--accent);
 }
 
 h1, h2, h3 {
+    font-size: 1.8em;
     font-family: Georgia, serif;
     color: var(--mid);
 }
 
 hr {
     color: var(--dark);
-    margin-right: 5%;
-    margin-left: 5%;
+    margin-right: 2.5%;
+    margin-left: 2.5%;
+    margin-bottom: 5vh;
     height: 1px;
     background-color: var(--dark);
     border: none;
 }
 
 section {
-    margin-top: 3em;
+    margin-bottom: 10vh;
 }
 
 input, textarea {
@@ -47,11 +56,11 @@ input, textarea {
 }
 
 input:focus, textarea:focus {
-    border: 3px solid var(--accent-1);
+    border: 3px solid var(--accent);
 }
 
 input[type=submit] {
-    color: var(--accent-1);
+    color: var(--accent);
     font-weight: bold;
     font-size: 16px;
     margin: 4px;
@@ -74,8 +83,12 @@ input[type=submit] {
 
 @media (max-width: 600px) {
     .content {
-        margin-left: 0;
-        margin-right: 0;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+    }
+
+    p, li {
+        font-size: 17px;
     }
 }
 
@@ -88,7 +101,7 @@ input[type=submit] {
 
 .header-row {
     vertical-align: middle;
-    font-size: 48px;
+    font-size: 36px;
 }
 
 @media (max-width: 600px) {
@@ -131,7 +144,7 @@ input[type=submit] {
 }
 
 .nav-bar a:hover {
-    color: var(--accent-1);
+    color: var(--accent);
 }
 
 .contact {
@@ -149,8 +162,13 @@ input[type=submit] {
     grid-template-columns: 50% 50%;
 }
 
+.footer-hr {
+    margin-bottom: 1em;
+}
+
 @media (max-width: 800px) {
     .skills-list {
         display: block
     }
 }
+

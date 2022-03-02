@@ -2,96 +2,169 @@
 {% block title %}Gamelib -- Jeffrey Pepin{% endblock %}
 {% block content %}
 <section>
-  <div class="header-row">
-    <h1>Gamelib</h1>
-    <a href="https://github.com/PeffJepin/gamelib" target="_blank" title="Source code hosted on github.">
-      <img class="gh-logo" src="{{ url_for('static', filename='images/github-logo.png') }}">
-    </a>
-  </div>
+    <div class="header-row">
+        <h1>Gamelib</h1>
+        <a href="https://github.com/PeffJepin/gamelib" target="_blank" title="Source code hosted on github.">
+            <img class="gh-logo" src="{{ url_for('static', filename='images/github-logo.png') }}">
+        </a>
+    </div>
 </section>
 <section>
-  <h2>What is it?</h2>
-  <p>Gamelib is a library for creating 3d desktop applications in python. I wrote this libary largely because I learned OpenGL a while back and have been wanting to do something with it. I have tested it against Windows and Linux.</p>
-  <p>I'm also very interested in learning more about C. I think it would pair very well with my knowledge in python. I figure this will make an interesting project to implement at least partially in C, as it can really benefit from the performance benefits. Now that the library is able to fit some simple use cases, I plan to do just that.</p>
-  <p>I don't have any formal documentation about gamelib, so I'll write a little bit here about what each subpackage does and explain some of the choices I've made along the way as an overview of the library so far. Alternatively, you can view the <a href="https://github.com/peffjepin/gamelib" target="_blank">source code</a> where most modules are documented.</p>
+    <h2>What is it?</h2>
+    <p>Gamelib is a library for creating 3d desktop applications in python. I 
+    wrote this libary becauase I wanted to be able to prototype game ideas 
+    quickly in python, and I wanted to have access to the OpenGL programmable 
+    pipeline. I have tested it against Windows and Linux.</p>
+    <p>I'm also very interested in learning more about C. I think it would pair 
+    very well with my knowledge in python. I figure this will make an interesting 
+    project to implement at least partially in C, as it can really benefit from 
+    the performance. Now that the library is able to fit some simple 
+    use cases, I plan to do just that.</p>
+    <p>I don't have any formal documentation about gamelib, so I'll write a 
+    little bit here about what each subpackage does and explain some of the 
+    choices I've made along the way as an overview of the library so far. 
+    Alternatively, you can view the 
+    <a href="https://github.com/peffjepin/gamelib" target="_blank">source code</a> 
+    where most modules are documented.</p>
 </section>
 <section>
-  <h2>Dependencies</h2>
-  <h3>NumPy</h3>
-  <p><a href="https://numpy.org/" target="_blank">NumPy</a> is the only dependency gamelib currently has that likely isn't going anywhere. Getting properly formatted data to the gpu is made easy with NumPy and the ability to run calculations from python with reasonable performance is very valuable for a real time rendering application.</p>
-  <h3>Pygame</h3>
-  <p>Currently I am using <a href="https://www.pygame.org/news" target="_blank">pygame</a> as a window provider, it uses SDL2. I've always seen pygame as a temporary dependency, as I am only using it for the window. I plan on replacing this with <a href="https://www.glfw.org/" target="_blank">GLFW</a> soon.</p>
-  <h3>ModernGL</h3>
-  <p><a href="https://github.com/moderngl/moderngl" target="_blank">ModernGL</a> is the OpenGL binding that I am currently using. My plan is also to replace this with my own abstraction around OpenGL.</p>
-  <h3>ModernGL-Window</h3>
-  <p><a href="https://github.com/moderngl/moderngl-window" target="_blank">ModernGL-Window</a> is a dependency I pulled in earlier in the project when I still wasn't sure exactly how I wanted to handle the window, and this project supports several different window providers in python. This too will be removed in favor of GLFW soon.</p>
-  <h3>PIL</h3>
-  <p><a href="https://github.com/python-pillow/Pillow" target="_blank">Python imaging library</a>. I use this to load images for textures. I am still up in the air about this dependency, I will have to weigh the benefits of using this vs using some C library later on once I have the core or gamelib re-written in C.</p>
+    <h2>Dependencies</h2>
+    <h3>NumPy</h3>
+    <p><a href="https://numpy.org/" target="_blank">NumPy</a> is the only 
+    dependency that likely isn't going anywhere. Getting properly formatted data 
+    to the gpu is made easy with NumPy and the ability to run calculations 
+    from python with reasonable performance is very valuable for a real time 
+    rendering application.</p>
+    <h3>Pygame</h3>
+    <p>Currently I am using 
+    <a href="https://www.pygame.org/news" target="_blank">pygame</a> as a 
+    window provider, it uses SDL2. I've always seen pygame as a temporary 
+    dependency, as I am only using it for the window. I plan on replacing 
+    this with <a href="https://www.glfw.org/" target="_blank">GLFW</a> soon.</p>
+    <h3>ModernGL</h3>
+    <p><a href="https://github.com/moderngl/moderngl" target="_blank">ModernGL</a> 
+    is the OpenGL binding that I am currently using. My plan is also to replace 
+    this with my own abstraction around OpenGL.</p>
+    <h3>ModernGL-Window</h3>
+    <p><a href="https://github.com/moderngl/moderngl-window" target="_blank">ModernGL-Window</a> 
+    is a dependency I pulled in earlier in the project when I still wasn't sure 
+    exactly how I wanted to handle the window, and this project supports several 
+    different window providers in python. This too will be removed in favor of GLFW soon.</p>
+    <h3>PIL</h3>
+    <p><a href="https://github.com/python-pillow/Pillow" target="_blank">Python imaging library</a>. 
+    I use this to load images for textures. I am still up in the air about this 
+    dependency, I will have to weigh the benefits of using this against using some 
+    C library later once I have the core or gamelib re-written in C.</p>
 </section>
 <section>
-  <h2>The Code</h2>
-  <h3>Core</h3>
-  <p>The core components of the gamelib runtime. This package includes:
-  <ul>
-    <li>An event module for decoupled communication.</li>
-    <li>An input module for easily defining callback functions to input events.</li>
-    <li>Datatypes for OpenGL/numpy compatibility and support for elementwise operations with vector types.</li>
-    <li>Timekeeping/scheduling utilities.</li>
-    <li>Window/OpenGL context initialization and control.</li>
-  </ul>
-  <p>I'm fairly happy with this subpackage and don't plan on touching it too much, as a good portion of it will be rewritten in C in the future.</p>
+    <h2>The Code</h2>
+    <h3>Core</h3>
+    <p>The core components of the gamelib runtime. This package includes:
+    <ul>
+        <li>An event module for decoupled communication.</li>
+        <li>An input module for easily defining callback functions to input events.</li>
+        <li>Datatypes for OpenGL/numpy compatibility and support for elementwise operations with vector types.</li>
+        <li>Timekeeping/scheduling utilities.</li>
+        <li>Window/OpenGL context initialization and control.</li>
+    </ul>
+    </p>
+    <p>I'm fairly happy with this subpackage and don't plan on touching it too 
+    much, as a good portion of it will be rewritten in C in the future.</p>
 </section>
 <section>
-  <h3>Geometry</h3>
-  <p>The geometry package handles 3d related problems. This includes:</p>
-  <ul>
-    <li>A base class for describing 3d geometry.</li>
-    <li>A module for handling collision detection.</li>
-    <li>Some implementations of some basic geometry.</li>
-    <li>Modules for parsing 3d data files. Only support .obj currently.</li>
-    <li>Various transformation matrices and procedures for applying them.</li>
-  </ul>
-  <p>The most interesting bit of this subpackage is probably the collision related code. I was initially not planning on touching collisions until I got down to C, but wanted to be able to detect which entities had been clicked on so I implemented just enough to get that done with reasonable performance.</p>
+    <h3>Geometry</h3>
+    <p>The geometry package handles 3d related problems. This includes:
+    <ul>
+        <li>A base class for describing 3d geometry.</li>
+        <li>A module for handling collision detection.</li>
+        <li>Implementations of some basic geometry.</li>
+        <li>Modules for parsing 3d data files. Only supports .obj currently.</li>
+        <li>Various transformation matrices and procedures for applying them.</li>
+    </ul>
+    </p>
+    <p>The most interesting bit of this subpackage is probably the collision 
+    related code. I was initially not planning on touching collisions until I 
+    got down to C, but wanted to be able to detect which entities had been 
+    clicked on so I implemented just enough to get that done with reasonable performance.</p>
 </section>
 <section>
-  <h3>Rendering</h3>
-  <p>My aim for the rendering package is to have the library handle a lot of boilerplate OpenGL stuff on its own. Right now it's features include:
-  <ul>
-    <li>OpenGL buffer wrapper that can keep itself synced with a numpy ndarray.</li>
-    <li>A camera module with default implementations for both perspective and orthogonal projections.</li>
-    <li>A module for issuing instructions to the gpu.</li>
-    <li>A custom glsl shader preprocessor.</li>
-    <li>A texture module that can load and atlas together images.</li>
-    <li>Several global values that get automatically sourced to any shader that implements them as uniforms.</li>
-  </ul>
-  <p>This package goes a long ways to making rendering pretty simple, though it is noteably missing some kind of formal "Scene" type and a generalized "Drawable" type.</p>
+    <h3>Rendering</h3>
+    <p>My aim for the rendering package is to have the library handle a lot of 
+    boilerplate OpenGL stuff on its own. Right now it's features include:
+    <ul>
+        <li>OpenGL buffer wrapper that can keep itself synced with a numpy ndarray.</li>
+        <li>A camera module with default implementations for both perspective 
+            and orthogonal projections.</li>
+        <li>A module for issuing instructions to the gpu.</li>
+        <li>A custom glsl shader preprocessor.</li>
+        <li>A texture module that can load and atlas together images.</li>
+        <li>Several global values that get automatically sourced to any shader 
+            that implements them as uniforms.</li>
+    </ul>
+    </p>
+    <p>This package goes a long ways to making rendering pretty simple, 
+    though it is noteably missing some kind of formal "Scene" type and a 
+    generalized "Drawable" type.</p>
 </section>
 <section>
-  <h3>Ecs</h3>
-  <p>If you're unfamiliar, ECS is an acronym for <a href="https://en.wikipedia.org/wiki/Entity_component_system" target="_blank">Entity-Component-System</a>. My implementation right now contains the following:</p>
-  <ul>
-    <li>A Component type which is used to define some unit of data.</li>
-    <li>An Entity type which defines the types of Components it binds together.</li>
-    <li>Support for data manipulation at the array level or at the element level.</li>
-  </ul>
-  <p>So Component types represent data and Entity types are basically a bucket of Component ids. This seems like it would be a pretty simple module at the surface, but there is actually quite a lot going on underneath the surface. For instance: </p>
-  <ul>
-    <li>Data arrays are dynamically allocated. To maintain a reference to an array you must go through a proxy object.</li>
-    <li>Data arrays are kept tightly packed. An index must be maintained to track identity. This index is fragmented, making the resizing procedures a bit complicated.</li>
-    <li>Data arrays must support being masked by Entity type. Supporting array operations against this framented mask introduces challenges, because we can't simply create a numpy view of the array.</li>
-  </ul>
-  <p>I don't currently have a formal System type defined. I tried an implementation using python processes with Component arrays allocated in shared memory. I have since discarded that as it doesn't map well to my eventual plan for the System implemenation.</p>
-  <p>Classically in an ECS framework, Systems each run in their own thread and should try to share as little data as possible and this is ultimately what my plan is for Systems. This is done for parallelism, not for concurrency, so implementing this in python threads would be a fruitless task due to the global interpreter lock.</p>
-  <p>If you're interested in seeing what this all looks like in action, take a look at the <a href="https://github.com/peffjepin/gamelib/blob/main/gamelib/ecs/base.py" target="_blank">module docstring</a> for some examples.</p>
+    <h3>Ecs</h3>
+    <p>If you're unfamiliar, ECS is an acronym for 
+    <a href="https://en.wikipedia.org/wiki/Entity_component_system" target="_blank">Entity-Component-System</a>. 
+    My implementation right now contains the following:
+    <ul>
+        <li>A Component type, which is used to define some unit of data.</li>
+        <li>An Entity type, which is used to bind different types of Components 
+            together under a single identity.</li>
+        <li>Support for data manipulation at the array level or at the element level.</li>
+    </ul>
+    </p>
+    <p>So Component types represent data and Entity types are basically a bucket 
+    of Component ids. This seems like it would be a pretty simple module at the 
+    surface, but there is actually quite a lot going on underneath the surface. 
+    For instance:     
+    <ul>
+        <li>Data arrays are dynamically allocated. To maintain a reference to
+            an array you must go through a proxy object.</li>
+        <li>Data arrays are kept tightly packed. An index must be maintained to 
+            track identity. This index is fragmented, making the resizing 
+            procedures a bit complicated.</li>
+        <li>Data arrays must support being masked by Entity type. Supporting 
+            array operations against this fragmented mask introduces challenges, 
+            because we can't simply create a numpy view of the array since we 
+            would be using advanced indexing.</li>
+    </ul>
+    </p>
+    <p>I don't currently have a formal System type defined. I tried an 
+    implementation using python processes with Component arrays allocated in 
+    shared memory. I have since discarded that as it doesn't map well to my 
+    eventual plan for the System implemenation.</p>
+    <p>Classically, in an ECS framework Systems each run in their own thread 
+    and should try to share as little data as possible and this is ultimately 
+    what my plan is for Systems. This is done for parallelism, not for concurrency, 
+    so implementing this in python threads would be a fruitless task due to the 
+    global interpreter lock.</p>
+    <p>If you're interested in seeing what this all looks like in action, 
+    take a look at the 
+    <a href="https://github.com/peffjepin/gamelib/blob/main/gamelib/ecs/base.py" target="_blank">module docstring</a> 
+    for some examples.</p>
 </section>
 <section>
-  <h3>Utils</h3>
-  <p>There is also a utils subpackage. It does not have much at the moment, just a decorator used for marking functions. This is used by the events and input modules currently for marking handler functions.</p>
-  <p>I will extract helper classes into this package as I run into cases where helpers from one module become relevent to another.</p>
+    <h3>Utils</h3>
+    <p>There is also a utils subpackage. It does not have much at the moment, 
+    just a decorator used for marking functions. This is used by the events and 
+    input modules currently for marking handler functions.</p>
+    <p>I will extract helper classes into this package as I run into cases 
+    where helpers from one module become relevent to another.</p>
 </section>
 <section>
-  <h2>Final Thoughts</h2>
-  <p>My plans for the project moving forward, as I've mentioned above, is to begin a C implemenation. I want to take this just far enough to phase out the dependencies I've been using temporarily in favour of the dependencies I plan on keeping long term.</p>
-  <p>After that I am still missing a few essential features like sound, UI and maybe a build system. Once these essentials are out of the way I plan on developing many more demos like gamelib-chess to start working out which parts of the library could use more work.</p>
+    <h2>Final Thoughts</h2>
+    <p>My plans for the project moving forward, as I've mentioned above, is to 
+    begin a C implemenation. I want to take this just far enough to phase out 
+    the dependencies I've been using temporarily in favour of the dependencies 
+    I plan on keeping long term.</p>
+    <p>After that I am still missing a few essential features like sound, UI 
+    and maybe a build system. Once these essentials are out of the way I plan 
+    on developing many more demos like gamelib-chess to start working out which 
+    parts of the library could use more work.</p>
 </section>
 {% endblock %}

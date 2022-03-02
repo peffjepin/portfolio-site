@@ -27,15 +27,15 @@ def init(config):
     global engine
 
     engine = sql.create_engine(
-        config.url,
-        echo=False,
-        future=True,
+        config.url, echo=False, future=True, pool_recycle=60
     )
 
     try:
         meta.create_all(engine)
-    except sql.exc.OperationalError:
-        raise InvalidCredentials()
+    except sql.exc.OperationalError as e:
+        if "access denied" in str(e).lower():
+            raise InvalidCredentials()
+        raise e
 
 
 def init_debug():
@@ -58,15 +58,21 @@ def _check_init():
         )
 
 
-def insert_contact_message(name, email, msg):
+def insert_contact_message(name, email, msg, *, _retry=False):
     _check_init()
 
     stmt = sql.insert(contact_table).values(
         name=name, email=email, message=msg
     )
-    with engine.connect() as conn:
-        conn.execute(stmt)
-        conn.commit()
+    try:
+        with engine.connect() as conn:
+            conn.execute(stmt)
+            conn.commit()
+    except sql.exc.OperationalError as e:
+        if "broken pipe" in str(e).lower() and _retry is False:
+            insert_contact_message(name, email, msg, _retry=True)
+        else:
+            raise e
 
 
 def print_contact_messages(file=sys.stdout):

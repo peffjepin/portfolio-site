@@ -2,29 +2,38 @@
 {% block title %}Jeffrey Pepin{% endblock %}
 {% block content %}
 <section>
-  <h1>Jeffrey Pepin</h1>
-  <p>
-  My name is Jeffrey Pepin. I am a self taught programmer. I'm interested most
-  in technical problems, I enjoy a challenge and really like to know how things work.
-  </p>
-  <p>
-  I began programming as something of a hobby around 2015, and since COVID-19 I have
-  been commited making a career out of it. <a href="{{ url_for('about') }}">Read more.</a>
-  </p>
+    <h1>Jeffrey Pepin</h1>
+    <p>
+    My name is Jeffrey Pepin. I am a self taught programmer. I'm interested most
+    in technical problems, I enjoy a challenge and really like to know how things work.
+    I am very interested in automation and procedural content generation in particular.
+    </p>
+    <p>
+    I began programming as something of a hobby around 2015, and since COVID-19 I have
+    been commited making a career out of it. <a href="{{ url_for('about') }}">Read more.</a>
+    </p>
 </section>
 <section>
-  <h1>Skills</h1>
-  {% include 'top-skills.html' %}
+    <h1>Skills</h1>
+    {% include 'top-skills.html' %}
 </section>
 <section>
-  <h1>Projects</h1>
-  <h2><a href="{{ url_for('gamelib') }}">gamelib</a></h2>
-  <p>This is my primary project. This is the project that I hope can set me apart from other candidates. I think that it demonstrates my ability to create something substantial on my own without having to follow a tutorial. It is backed by a substantial automated test suite and the source code is quite thoroughly documented.</p>
-  <h2><a href="{{ url_for('chess') }}">gamelib-chess</a></h2>
-  <p>I wrote this as a minimal demo for gamelib. I felt like I needed some kind of tangible showcase of the library that you can actually interact with. You can install and play this with just a few commands. It has been tested against Windows and Linux.</p>
-</section>
-<section>
-  <h3>Other</h3>
-  <p>I've been generalizing some small scripts I use and tossing those up on <a href="https://github.com/peffjepin" target="_blank">github</a> as smaller examples, feel free to check there for more work.</p>
+    <h1>Projects</h1>
+    <h2><a href="{{ url_for('gamelib') }}">gamelib</a></h2>
+    <p>This is my primary project. This is the project that I hope can set me 
+    apart from other candidates. I think that it demonstrates my ability to create 
+    something substantial on my own without having to follow a tutorial. It is 
+    backed by a substantial automated test suite and the source code is quite 
+    thoroughly documented.</p>
+    <h2><a href="{{ url_for('chess') }}">gamelib-chess</a></h2>
+    <p>I wrote this as a minimal demo for gamelib. I felt like I needed some kind 
+    of tangible showcase of the library that you can actually interact with. 
+    You can install and play this with just a few commands. It has been tested 
+    against Windows and Linux.</p>
+    <h3>Other</h3>
+    <p>I've been generalizing some small scripts I use and tossing those up on 
+    <a href="https://github.com/peffjepin" target="_blank">github</a> as smaller 
+    examples, feel free to check there for more work as well as the source code of 
+    <a href="https://github.com/peffjepin/portfolio-site" target="_blank">this site</a>.</p>
 </section>
 {% endblock %}
